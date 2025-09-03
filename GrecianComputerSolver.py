@@ -1,11 +1,9 @@
+#NOTES: gear0 is the biggest gear on the bottom, gear4 is the smallest gear on the top
+#Each tuple represents a column on the gear
+#The first element of each tuple is the number closest to the center, and the last element of each tuple is the number furthest away
+#The number 0 represents the gear's position being empty
 
-#gear0 is the biggest gear, gear4 is the smallest
-#each tuple represents a column on the gear
-#first element of the tuple is the number closest to the center, last element is the number furthest away
-#the number 0 represents an empty slot on the gear's position
-
-
-#feel free to edit these gears and make your own grecian puzzle!
+#Feel free to edit these gears and make your own Grecian puzzle!
 
 gear0 = [
 (11,5,4,3),
@@ -83,35 +81,46 @@ gear4 = [
 ]
 
 
-#turns the gear counterclockwise n times 
 def turn(gear,n):
+    """ Returns the gear turned counterclockwise by n columns
+        gear: a list of tuples
+        n: a nonnegative integer
+    """
     return gear[n:]+gear[:n]
 
-#returns the topmost number seen on the gear
 def display(slot0,slot1,slot2,slot3,slot4):
+    """ Returns the number displayed on the gear in the mechanical puzzle
+        slot0, slot1, slot2, slot3, slot4: a nonnegative integer
+    """
     slots = (slot4,slot3,slot2,slot1,slot0)
     for num in slots:
         if num != 0:
             return num
         
-#returns the sum of one column on the gear
 def sum_column(clmn0,clmn1,clmn2,clmn3,clmn4): 
+    """ Returns the sum of the displayed numbers on one column on the gear
+        clmn0,clmn1,clmn2,clmn3,clmn4: a tuple of length 4
+    """
     sum_clmn = 0
     for i in range(0,4):
         sum_clmn += display(clmn0[i],clmn1[i],clmn2[i],clmn3[i],clmn4[i])
     return sum_clmn
 
-#returns the number of columns that sum to 42
 def num_sum_forty_two(gear0,gear1,gear2,gear3,gear4): #returns number of columns that sum to 42
+    """ Returns the number of columns in the puzzle that sum to 42
+        gear0,gear1,gear2,gear3,gear4: a list with 12 tuples
+    """
     sum_num = 0
     for i in range(0,12):
         if sum_column(gear0[i],gear1[i],gear2[i],gear3[i],gear4[i]) == 42:
             sum_num += 1
     return sum_num
 
-#solves the puzzle by checking every possibility
-#returns a list that indicates how many times each gear must be turned counterclockwise (first element is bottommost gear, last element is topmost)
 def solve(gear0,gear1,gear2,gear3,gear4):
+    """ Returns a list that indicates how many times each gear must be turned counterclockwise to solve the puzzle
+        The first element of the returned list applies to the bottommost gear, and the last element applies to the topmost gear
+        gear0,gear1,gear2,gear3,gear4: a list with 12 tuples
+    """
     for b in range(0,12):
         for c in range(0,12):
             for d in range(0,12):
@@ -120,6 +129,11 @@ def solve(gear0,gear1,gear2,gear3,gear4):
                         return [0,b,c,d,e]
 
 #we solve the puzzle!!! \(^ O ^)/
-print(solve(gear0,gear1,gear2,gear3,gear4))
-
-#answer is [0,11,2,7,7]
+print("Number of counterclockwise turns:", solve(gear0,gear1,gear2,gear3,gear4))
+print()
+print("Full solution:")
+print(gear0)
+print(turn(gear1,11))
+print(turn(gear2,2))
+print(turn(gear3,7))
+print(turn(gear4,7))
